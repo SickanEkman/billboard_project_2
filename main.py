@@ -10,16 +10,16 @@ this_year = str(datetime.date.today().year)
 
 class Project(object):
     def __init__(self):
-        self.first_year = 1992
-        self.last_year =  1992
-        self.chart_name = "radio-songs"
-        self.number_of_songs = 10
+        self.first_year = int(input("What's the first year of the chart? (Ex. 1970)\n"))
+        self.last_year = int(input("What's the last year of the chart? (Ex. " + this_year + ")\n"))
+        self.chart_name = input("What is the name of the chart?\n")
+        self.number_of_songs = int(input("How many songs from each year?\n"))
+#        self.first_year = 1992
+#        self.last_year =  1992
+#        self.chart_name = "radio-songs"
+#        self.number_of_songs = 10
         self.year_dict, self.date_list = self.get_songs_from_billboard()
         self.dict_with_song_objs = self.create_song_objects()
-#        self.first_year = int(input("What's the first year of the chart? (Ex. 1970)\n"))
-#        self.last_year = int(input("What's the last year of the chart? (Ex. " + this_year + ")\n"))
-#        self.chart_name = input("What is the name of the chart?\n")
-#        self.number_of_songs = int(input("How many songs from each year?\n"))
         #todo: change to user input later
 
 
@@ -124,9 +124,3 @@ class Song_obj():
 
 first_project = Project()
 #print(first_project.dict_with_song_objs["song_1990_0"].url)
-
-#todo: make "Sia-Featuring-Sean-Paul-Cheap-Thrills-lyrics" into "Sia-cheap-thrills-remix-lyrics"
-#todo: make "Calvin-Harris-Featuring-Rihanna-This-Is-What-You-Came-For-lyrics" into "Calvin-harris-this-is-what-you-came-for-lyrics"
-#todo: make "Bruno-Mars-That's-What-I-Like-lyrics" into "Bruno-mars-thats-what-i-like-lyrics" (the ')
-#todo: make "Luis-fonsi-and-daddy-yankee-featuring-justin-bieber-despacito-remix-lyrics" into "Luis-fonsi-and-daddy-yankee-despacito-remix-lyrics"
-#todo: make for I Wanna Sex You Up (From "New Jack City") into "Color-me-badd-i-wanna-sex-you-up-lyrics"
