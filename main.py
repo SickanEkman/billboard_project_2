@@ -6,18 +6,18 @@ import re
 
 import Get_charts
 
-this_year = str(datetime.date.today().year)
+this_year = datetime.date.today().year
 
 class Project(object):
-    def __init__(self):
-        self.first_year = int(input("What's the first year of the chart? (Ex. 1970)\n"))
-        self.last_year = int(input("What's the last year of the chart? (Ex. " + this_year + ")\n"))
-        self.chart_name = input("What is the name of the chart?\n")
-        self.number_of_songs = int(input("How many songs from each year?\n"))
-#        self.first_year = 1992
-#        self.last_year =  1992
-#        self.chart_name = "radio-songs"
-#        self.number_of_songs = 10
+    def __init__(self, first_year, chart, num_songs, last_year=this_year):
+ #       self.first_year = int(input("What's the first year of the chart? (Ex. 1970)\n"))
+ #       self.last_year = int(input("What's the last year of the chart? (Ex. " + this_year + ")\n"))
+ #       self.chart_name = input("What is the name of the chart?\n")
+ #       self.number_of_songs = int(input("How many songs from each year?\n"))
+        self.first_year = first_year
+        self.last_year = last_year
+        self.chart_name = chart
+        self.number_of_songs = num_songs
         self.year_dict, self.date_list = self.get_songs_from_billboard()
         self.dict_with_song_objs = self.create_song_objects()
         #todo: change to user input later
@@ -119,8 +119,10 @@ class Song_obj():
             else:
                 lyrics_as_list.append(line)
         lyrics = "\n".join(lyrics_as_list)
+        print(lyrics)
         return lyrics
 
+#BELOW IS USER INPUT, todo: remove later
 
-first_project = Project()
+first_project = Project(first_year=2015, chart="radio-songs", num_songs=3)
 #print(first_project.dict_with_song_objs["song_1990_0"].url)
