@@ -10,18 +10,12 @@ this_year = datetime.date.today().year
 
 class Project(object):
     def __init__(self, first_year, chart, num_songs, last_year=this_year):
- #       self.first_year = int(input("What's the first year of the chart? (Ex. 1970)\n"))
- #       self.last_year = int(input("What's the last year of the chart? (Ex. " + this_year + ")\n"))
- #       self.chart_name = input("What is the name of the chart?\n")
- #       self.number_of_songs = int(input("How many songs from each year?\n"))
         self.first_year = first_year
         self.last_year = last_year
         self.chart_name = chart
         self.number_of_songs = num_songs
         self.year_dict, self.date_list = self.get_songs_from_billboard()
         self.dict_with_song_objs = self.create_song_objects()
-        #todo: change to user input later
-
 
     def get_songs_from_billboard(self):
         year_dict = Get_charts.create_year_data(self.first_year, self.last_year)
@@ -38,71 +32,61 @@ class Project(object):
                     name = "song_" + str(k)
                     song_obj_dict[name] = Song_obj(v)
                 except AttributeError:
-                    print("COULDN'T FIND LYRICS FOR A SONG! THIS ONE:", v["title"])
+                    print("COULDN'T FIND LYRICS FOR THIS SONG:", v["title"], "by", v["artist"])
+                    print("PRINTING LYRICS ATTR:", v.lyrics)
                     pass
         return song_obj_dict
 
 class Song_obj():
     def __init__(self, song_info):
-        #print("Song object created!")
         self.artist = song_info["artist"]
         self.title = song_info["title"]
         self.rank = song_info["rank"]
         self.date = song_info["date"]
         self.lyrics = self.get_lyrics()
-        #print(self.lyrics)
 
     def create_url_for_genius(self, x=1):
         regex_and = r"&"
         regex_punct = r"[^\w\-\s]"
         regex_feat = r" Featuring.*"
         regex_parenthesis = r"\s\(.*\)"
+        regex_dollar = r"\$"
+        regex_exl_mark = r"(!)(\w)"
         base_url = "https://genius.com/"
+        artist_url = re.sub(regex_feat, "", self.artist)
+        artist_url = re.sub(regex_and, "and", artist_url)
+        artist_url = re.sub(regex_dollar, "s", artist_url)
+        artist_url = re.sub(regex_exl_mark, "s", artist_url)
+        title_url = re.sub(regex_and, "and", self.title)
+        title_url = re.sub(regex_exl_mark, "and", title_url)
         if x == 1:
-            artist_url = re.sub(regex_feat, "", self.artist)
-            artist_url = re.sub(regex_and, "and", artist_url)
-            artist_url = re.sub(regex_punct, "", artist_url)
-            artist_url = re.sub("\s", "-", artist_url)
-            #title_url = re.sub(regex_parenthesis, "", self.title)
-            title_url = re.sub(regex_and, "and", self.title)
-            title_url = re.sub(regex_punct, "", title_url)
-            title_url = re.sub("\s", "-", title_url)
-            final_url = base_url + artist_url + "-" + title_url + "-lyrics"
+            url_ending = "-lyrics"
         elif x == 2:
-            artist_url = re.sub(regex_feat, "", self.artist)
-            artist_url = re.sub(regex_and, "and", artist_url)
-            artist_url = re.sub(regex_punct, "", artist_url)
-            artist_url = re.sub("\s", "-", artist_url)
-            title_url = re.sub(regex_parenthesis, "", self.title)
-            title_url = re.sub(regex_and, "and", title_url)
-            title_url = re.sub(regex_punct, "", title_url)
-            title_url = re.sub("\s", "-", title_url)
-            final_url = base_url + artist_url + "-" + title_url + "-remix-lyrics"
+            title_url = re.sub(regex_parenthesis, "", title_url)
+            url_ending = "-lyrics"
         elif x == 3:
-            artist_url = re.sub(regex_feat, "", self.artist)
-            artist_url = re.sub(regex_and, "and", artist_url)
-            artist_url = re.sub(regex_punct, "", artist_url)
-            artist_url = re.sub("\s", "-", artist_url)
-            title_url = re.sub(regex_parenthesis, "", self.title)
-            title_url = re.sub(regex_and, "and", title_url)
-            title_url = re.sub(regex_punct, "", title_url)
-            title_url = re.sub("\s", "-", title_url)
-            final_url = base_url + artist_url + "-" + title_url + "-lyrics"
+            title_url = re.sub(regex_parenthesis, "", title_url)
+            url_ending = "-remix-lyrics"
+        artist_url = re.sub(regex_punct, "", artist_url)
+        artist_url = re.sub("\s", "-", artist_url)
+        title_url = re.sub(regex_punct, "", title_url)
+        title_url = re.sub("\s", "-", title_url)
+        final_url = base_url + artist_url + "-" + title_url + url_ending
         return final_url
 
     def get_lyrics(self):
-        url = self.create_url_for_genius()
         try:
+            url = self.create_url_for_genius(1)
             r = requests.get(url)
             r.raise_for_status()
-            print("FIRST ALT")
         except:
-            print("FIRST EXCEPTION CATCHED")
+            print("TRYING SECOND!!!!!xxxxxx")
             try:
                 url = self.create_url_for_genius(2)
                 r = requests.get(url)
+                r.raise_for_status()
             except:
-                print("SECOND EXCEPTION CATCHED")
+                print("TRYING THIRD!!!!!!!!!xxxxxxxxx")
                 url = self.create_url_for_genius(3)
                 r = requests.get(url)
         data = r.text
@@ -114,15 +98,15 @@ class Song_obj():
         mini_soup_as_list = mini_soup.split("\n")
         for line in mini_soup_as_list:
             if "[" in line or (len(line) == 0) or line.startswith("Chorus") or (line.startswith("(") and
-                                                                                    line.endsswith(")")):
+                                                                                    line.endswith(")")):
                 pass
             else:
                 lyrics_as_list.append(line)
         lyrics = "\n".join(lyrics_as_list)
-        print(lyrics)
+        print(lyrics[0:20])
         return lyrics
 
 #BELOW IS USER INPUT, todo: remove later
 
-first_project = Project(first_year=2015, chart="radio-songs", num_songs=3)
+first_project = Project(first_year=2017, chart="radio-songs", num_songs=5)
 #print(first_project.dict_with_song_objs["song_1990_0"].url)
