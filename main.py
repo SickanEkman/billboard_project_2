@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import re
 
 import Get_charts
+import cloud
 
 this_year = datetime.date.today().year
 
@@ -36,6 +37,9 @@ class Project(object):
                     print("PRINTING LYRICS ATTR:", v.lyrics)
                     pass
         return song_obj_dict
+
+    def get_clouds(self):
+        cloud.create_cloud(self.dict_with_song_objs)
 
 class Song_obj():
     def __init__(self, song_info):
@@ -109,4 +113,5 @@ class Song_obj():
 #BELOW IS USER INPUT, todo: remove later
 
 first_project = Project(first_year=2017, chart="radio-songs", num_songs=5)
+first_project.get_clouds()
 #print(first_project.dict_with_song_objs["song_1990_0"].url)
