@@ -40,20 +40,20 @@ will provide a semi-random summer month for each year during your selected time 
 
 ### Features
 
-class Project(first_year=2010, last_year=this_year, chart="radio-songs", num_songs=3)
+class Project(*first_year=2010, last_year=this_year, chart="radio-songs", num_songs=3*)
 
 | Parameters    |                                           |
 |---------------|-------------------------------------------|
 |first_year: int|The year you wish to start getting billbord charts for|
 |last_year: int |The last year of your time period. Defaults to current year|
 |chart: str     |Example "radio-hits", "hot-100", see [billboard.com](http://www.billboard.com/charts) for more|
-|num_songs:int  |Number of songs you wish to see from each year|
+|num_songs: int  |Number of songs you wish to see from each year|
 
 | Methods       |                                           |
 |---------------|-------------------------------------------|
 |get_clouds()   |Create a word cloud for each song          |
 
-###Examples
+### Example
 
 ```
 # Import third party libraries
