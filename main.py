@@ -1,16 +1,16 @@
 import json
 import datetime
-import requests
-from bs4 import BeautifulSoup
-import re
 
-import Get_charts
+import get_charts
+import song_objects
 import cloud
 
 this_year = datetime.date.today().year
 
+
 class Project(object):
-    def __init__(self, first_year, chart, num_songs, last_year=this_year):
+    def __init__(self, first_year=2010, last_year=this_year, chart="radio-songs", num_songs=3):
+        """Gets Billboard chart info and instantiates a song object for each hit."""
         self.first_year = first_year
         self.last_year = last_year
         self.chart_name = chart
@@ -19,99 +19,37 @@ class Project(object):
         self.dict_with_song_objs = self.create_song_objects()
 
     def get_songs_from_billboard(self):
-        year_dict = Get_charts.create_year_data(self.first_year, self.last_year)
-        date_list = Get_charts.create_date_list(year_dict)
-        Get_charts.collect_charts(date_list, self.chart_name, year_dict, self.number_of_songs)
+        """Gets charts from billboard, saves song info to one json-file. Returns dictionary with years + list with
+        dates."""
+        year_dict = get_charts.create_year_data(self.first_year, self.last_year)  # Example {1: 2000, 2: 2001, ...}
+        date_list = get_charts.create_date_list(year_dict)  # Example {"2000-06-01", "2000-08-20", ...}
+        get_charts.collect_charts(date_list, self.chart_name, self.number_of_songs)  # saves chart info as
+        # json-file
         return year_dict, date_list
 
     def create_song_objects(self):
+        """For each song in the json-file a song object is instantiated. Returns a dictionary with all song objects.
+        Example: {"song_2000_0": <__main__.Song_obj...>, "song_2000_1": <__main__.Song_obj...>}"""
         song_obj_dict = {}
         with open("chart_songs.json", "r") as fin:
             song_data = json.load(fin)
             for k, v in song_data.items():
                 try:
                     name = "song_" + str(k)
-                    song_obj_dict[name] = Song_obj(v)
+                    song_obj_dict[name] = song_objects.SongObj(v)  # instantiates the song object
                 except AttributeError:
                     print("COULDN'T FIND LYRICS FOR THIS SONG:", v["title"], "by", v["artist"])
-                    print("PRINTING LYRICS ATTR:", v.lyrics)
-                    pass
+                    pass  # if the url didn't return a lyric no object is created for the song
         return song_obj_dict
 
     def get_clouds(self):
+        """For each song object, a word cloud is generated and displayed as a picture. (In the future these word clouds
+        will be joined in a timeline on a web page. You will also be able to chose if you want each song separately
+        or all songs from a date joined into one cloud.) """
         cloud.create_cloud(self.dict_with_song_objs)
 
-class Song_obj():
-    def __init__(self, song_info):
-        self.artist = song_info["artist"]
-        self.title = song_info["title"]
-        self.rank = song_info["rank"]
-        self.date = song_info["date"]
-        self.lyrics = self.get_lyrics()
 
-    def create_url_for_genius(self, x=1):
-        regex_and = r"&"
-        regex_punct = r"[^\w\-\s]"
-        regex_feat = r" Featuring.*"
-        regex_parenthesis = r"\s\(.*\)"
-        regex_dollar = r"\$"
-        regex_exl_mark = r"(!)(\w)"
-        base_url = "https://genius.com/"
-        artist_url = re.sub(regex_feat, "", self.artist)
-        artist_url = re.sub(regex_and, "and", artist_url)
-        artist_url = re.sub(regex_dollar, "s", artist_url)
-        artist_url = re.sub(regex_exl_mark, "s", artist_url)
-        title_url = re.sub(regex_and, "and", self.title)
-        title_url = re.sub(regex_exl_mark, "and", title_url)
-        if x == 1:
-            url_ending = "-lyrics"
-        elif x == 2:
-            title_url = re.sub(regex_parenthesis, "", title_url)
-            url_ending = "-lyrics"
-        elif x == 3:
-            title_url = re.sub(regex_parenthesis, "", title_url)
-            url_ending = "-remix-lyrics"
-        artist_url = re.sub(regex_punct, "", artist_url)
-        artist_url = re.sub("\s", "-", artist_url)
-        title_url = re.sub(regex_punct, "", title_url)
-        title_url = re.sub("\s", "-", title_url)
-        final_url = base_url + artist_url + "-" + title_url + url_ending
-        return final_url
+# BELOW IS USER INPUT, todo: remove later
 
-    def get_lyrics(self):
-        try:
-            url = self.create_url_for_genius(1)
-            r = requests.get(url)
-            r.raise_for_status()
-        except:
-            print("TRYING SECOND!!!!!xxxxxx")
-            try:
-                url = self.create_url_for_genius(2)
-                r = requests.get(url)
-                r.raise_for_status()
-            except:
-                print("TRYING THIRD!!!!!!!!!xxxxxxxxx")
-                url = self.create_url_for_genius(3)
-                r = requests.get(url)
-        data = r.text
-        soup = BeautifulSoup(data, "html.parser")
-        print(url)
-        lyrics_as_list = []
-        small_soup = soup.find("div", class_="lyrics")
-        mini_soup = small_soup.text
-        mini_soup_as_list = mini_soup.split("\n")
-        for line in mini_soup_as_list:
-            if "[" in line or (len(line) == 0) or line.startswith("Chorus") or (line.startswith("(") and
-                                                                                    line.endswith(")")):
-                pass
-            else:
-                lyrics_as_list.append(line)
-        lyrics = "\n".join(lyrics_as_list)
-        print(lyrics[0:20])
-        return lyrics
-
-#BELOW IS USER INPUT, todo: remove later
-
-first_project = Project(first_year=2017, chart="radio-songs", num_songs=5)
+first_project = Project(first_year=2017, num_songs=5)
 first_project.get_clouds()
-#print(first_project.dict_with_song_objs["song_1990_0"].url)

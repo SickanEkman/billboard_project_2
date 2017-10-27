@@ -3,9 +3,9 @@ from wordcloud import WordCloud
 
 
 def create_cloud(dict_with_song_objs):
-    for k,v in dict_with_song_objs.items():
+    for k, v in dict_with_song_objs.items():
         text = v.lyrics.replace("\n", " ")
-        cloud = WordCloud().generate(text)
+        cloud = WordCloud(collocations=False).generate(text)
         plt.imshow(cloud, interpolation="bilinear")
         plt.axis("off")
         plt.show()
