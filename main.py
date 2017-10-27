@@ -42,14 +42,14 @@ class Project(object):
                     pass  # if the url didn't return a lyric no object is created for the song
         return song_obj_dict
 
-    def get_clouds(self):
+    def get_clouds(self, cloud_type):
         """For each song object, a word cloud is generated and displayed as a picture. (In the future these word clouds
         will be joined in a timeline on a web page. You will also be able to chose if you want each song separately
         or all songs from a date joined into one cloud.) """
-        cloud.create_cloud(self.dict_with_song_objs)
+        cloud.create_cloud(self.dict_with_song_objs, self.year_dict, cloud_type)
 
 
 # BELOW IS USER INPUT, todo: remove later
 
-first_project = Project(first_year=2017, num_songs=5)
-first_project.get_clouds()
+#first_project = Project(first_year=1990, num_songs=5)
+#first_project.get_clouds(cloud_type="year")
