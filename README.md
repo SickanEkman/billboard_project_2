@@ -34,8 +34,7 @@ git clone https://github.com/SickanEkman/billboard_project_2
 
 ## Running the program
 
-You start by instantiating your Project object. Decide what time span you want to look at songs from
-Billboard for, what specific chart you are interested in, and how many songs you want from each year. The program
+Instantiate your *Project* object. Specify a time span to look at songs from Billboard for, what specific chart you want, and how many songs you want from each year. The program
 will provide a semi-random summer month for each year during your selected time span.
 
 ### Features
