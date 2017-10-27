@@ -15,15 +15,18 @@ class SongObj(object):
     def get_lyrics(self):
         try:
             url = self.create_url_for_genius(1)  # the "1" means a default url is created
+            print(url)  # printing to check url success todo: remove
             r = requests.get(url)
             r.raise_for_status()  # if this returns None the url pointed to a proper web address
         except:  # some 4xx or 5xx server error response was returned in .raise_for_status()
             try:
                 url = self.create_url_for_genius(2)  # the "2" means an alternative url is created
+                print(url)  # printing to check url success todo: remove
                 r = requests.get(url)
                 r.raise_for_status()
             except:
                 url = self.create_url_for_genius(3)  # the "3" means yet another alternative url is created
+                print(url)  # printing to check url success todo: remove
                 r = requests.get(url)  # if this last url option doesn't work I give up ...
         data = r.text
         lyrics = self.read_html(data)
@@ -42,9 +45,9 @@ class SongObj(object):
         artist_url = re.sub(regex_feat, "", self.artist)
         artist_url = re.sub(regex_and, "and", artist_url)
         artist_url = re.sub(regex_dollar, "s", artist_url)
-        artist_url = re.sub(regex_exl_mark, "i", artist_url)
+        artist_url = re.sub(regex_exl_mark, r"i\2", artist_url)
         title_url = re.sub(regex_and, "and", self.title)
-        title_url = re.sub(regex_exl_mark, "i", title_url)
+        title_url = re.sub(regex_exl_mark, r"i\2", title_url)
         if x == 1:
             url_ending = "-lyrics"
         elif x == 2:
