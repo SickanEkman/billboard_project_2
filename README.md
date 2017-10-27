@@ -32,15 +32,16 @@ git clone https://github.com/SickanEkman/billboard_project_2
 * [matplotlib](https://matplotlib.org/) - A Python 2D plotting library
 * [wordcloud](https://github.com/amueller/word_cloud) - A little word cloud generator in Python
 
-##Running the program
+## Running the program
 
 You start by instantiating your Project object. Decide what time span you want to look at songs from
 Billboard for, what specific chart you are interested in, and how many songs you want from each year. The program
 will provide a semi-random summer month for each year during your selected time span.
 
-###Features
+### Features
 
 class Project(first_year=2010, last_year=this_year, chart="radio-songs", num_songs=3)
+
 | Parameters    |                                           |
 |---------------|-------------------------------------------|
 |first_year: int|The year you wish to start getting billbord charts for|
