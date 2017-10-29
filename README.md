@@ -52,7 +52,7 @@ class Project(*first_year=2010, last_year=this_year, chart="radio-songs", num_so
 |---------------|-------------------------------------------|
 |get_clouds(cloud_type=)   |Shows clouds as pictures and save each one as .png|
 |  cloud_type="song"|Creates a word cloud for each song|
-|  cloud_type="year"|Creates a word cloud for each year during time span, with all the years song lyrics combined.|
+|  cloud_type="year"|Creates a word cloud for each year during time span, with all song lyrics for the year combined.|
 
 ### Example
 
@@ -69,7 +69,7 @@ import song_objects
 my_project = Project(first_year=2015, chart="radio-songs", num_songs=5)
 # inspect the json-file. Happy with song selection?
 
-# Create word cloud for each song
+# Create word cloud for each year
 my_project.get_clouds(cloud_type="year")
 ```
 

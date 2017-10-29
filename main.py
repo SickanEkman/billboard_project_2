@@ -9,7 +9,7 @@ this_year = datetime.date.today().year
 
 
 class Project(object):
-    def __init__(self, first_year=2010, last_year=this_year, chart="radio-songs", num_songs=3):
+    def __init__(self, first_year=2015, last_year=this_year, chart="radio-songs", num_songs=3):
         """Gets Billboard chart info and instantiates a song object for each hit."""
         self.first_year = first_year
         self.last_year = last_year
@@ -51,5 +51,5 @@ class Project(object):
 
 # BELOW IS USER INPUT, todo: remove later
 
-#first_project = Project(first_year=1990, num_songs=5)
+#first_project = Project(first_year=2015, last_year=2015, num_songs=1)
 #first_project.get_clouds(cloud_type="year")
