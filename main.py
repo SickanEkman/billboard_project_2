@@ -44,12 +44,68 @@ class Project(object):
 
     def get_clouds(self, cloud_type):
         """For each song object, a word cloud is generated and displayed as a picture. (In the future these word clouds
-        will be joined in a timeline on a web page. You will also be able to chose if you want each song separately
+        will be joined in a time line on a web page. You will also be able to chose if you want each song separately
         or all songs from a date joined into one cloud.) """
         cloud.create_cloud(self.dict_with_song_objs, self.year_dict, cloud_type)
 
 
-# BELOW IS USER INPUT, todo: remove later
+def run_program():
+    while True:
+        print("\nMENU:")
+        choice = input("Hit 'd' for new project with default parameters\n"
+                       "Hit 'n' for new project with parameters specified by you\n"
+                       "Hit 'q' to exit\n")
+        if choice == "d":
+            new_project = Project()
+            print("\nTake a look at the json-file created in the project folder. Happy with the song selection?")
+            print("MENU:")
+            choice2 = input("Hit 's' to create a word cloud for each SONG\n"
+                            "Hit 'y' to create a word cloud for each YEAR\n"
+                            "Hit 'b' to start over from the beginning\n"
+                            "Hit 'q' to exit\n")
+            if choice2 == "s":
+                new_project.get_clouds(cloud_type="song")
+            elif choice2 == "y":
+                new_project.get_clouds(cloud_type="year")
+            elif choice2 == "q":
+                print("Goodbye!")
+                quit()
+            else:
+                run_program()
+        elif choice == "n":
+            a = int(input("First year: "))
+            b = int(input("Last year: "))
+            if a > b:
+                print("\nFirst year can't be later than last year. Try again!")
+                run_program()
+            elif a > this_year or b > this_year:
+                print("\nUnfortunately I can't get charts from the future. Try again!")
+                run_program()
+            else:
+                c = input("Chart name: ")
+                d = int(input("Number of songs for each year: "))
+                new_project = Project(first_year=a, last_year=b, chart=c, num_songs=d)
+                print("\nTake a look at the json-file created in the project folder. Happy with the song selection?")
+                print("MENU:")
+                choice2 = input("Hit 's' to create a word cloud for each SONG\n"
+                                "Hit 'y' to create a word cloud for each YEAR\n"
+                                "Hit 'b' to start over from the beginning\n"
+                                "Hit 'q' to exit\n")
+                if choice2 == "s":
+                    new_project.get_clouds(cloud_type="song")
+                elif choice2 == "y":
+                    new_project.get_clouds(cloud_type="year")
+                elif choice2 == "q":
+                    print("Goodbye!")
+                    quit()
+                else:
+                    run_program()
+        elif choice == "q":
+            print("Goodbye!")
+            quit()
+        else:
+            print("\nI didn't get that, try again.")
+            run_program()
 
-#first_project = Project(first_year=2015, last_year=2015, num_songs=1)
-#first_project.get_clouds(cloud_type="year")
+if __name__ == "__main__":
+    run_program()
