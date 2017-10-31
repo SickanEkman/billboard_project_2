@@ -1,6 +1,7 @@
 # TAL - Text Analysis of Lyrics
 
-TAL gets Billboard chart info and creates visual output of lyrics. The project is made as a school assignement for the course *Applyed programming for Linguists* at *Stockholm University*.
+TAL gets Billboard chart information and creates visual output of lyrics. The project is made as a school assignment
+for the course *Applyed programming for Linguists* at *Stockholm University*.
 
 ## Getting Started
 
@@ -17,11 +18,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-Terminal command:
+If you have git installed, type this command into your terminal:
 
 ```
 git clone https://github.com/SickanEkman/billboard_project_2
 ```
+
+If you don't have git, simply download zip files.
 
 ## Built With
 
@@ -34,44 +37,67 @@ git clone https://github.com/SickanEkman/billboard_project_2
 
 ## Running the program
 
-Instantiate your *Project* object. Specify a time span to look at songs from Billboard for, what specific chart you want, and how many songs you want from each year. The program
-will provide a semi-random summer month for each year during your selected time span.
-
-### Features
-
-class Project(*first_year=2010, last_year=this_year, chart="radio-songs", num_songs=3*)
-
-| Parameters    |                                           |
-|---------------|-------------------------------------------|
-|first_year: int|The year you wish to start getting billbord charts for|
-|last_year: int |The last year of your time period. Defaults to current year|
-|chart: str     |Example "radio-hits", "hot-100", see [billboard.com](http://www.billboard.com/charts) for more|
-|num_songs: int  |Number of songs you wish to see from each year|
-
-| Methods       |                                           |
-|---------------|-------------------------------------------|
-|get_clouds(cloud_type=)   |Shows clouds as pictures and save each one as .png|
-|  cloud_type="song"|Creates a word cloud for each song|
-|  cloud_type="year"|Creates a word cloud for each year during time span, with all song lyrics for the year combined.|
+TAL will ask for all input it needs to run. Just follow the instructions!
 
 ### Example
 
 ```
-# Import third party libraries
-import json
-import datetime
+*python3 main.py*
 
-# Import modules
-import get_charts
-import song_objects
+MENU:
+Hit 'd' for new project with default parameters
+Hit 'n' for new project with parameters specified by you
+Hit 'q' to exit
 
-# Instantiate your project
-my_project = Project(first_year=2015, chart="radio-songs", num_songs=5)
-# inspect the json-file. Happy with song selection?
+*n*
 
-# Create word cloud for each year
-my_project.get_clouds(cloud_type="year")
+First year: *1990*
+Last year: *2017*
+Chart name: *hot-100*
+Number of songs for each year: *10*
+
 ```
+(Above selection might take a couple of minutes)
+```
+
+Take a look at the json-file created in the project folder. Happy with the song selection?
+MENU:
+Hit 's' to create a word cloud for each SONG
+Hit 'y' to create a word cloud for each YEAR
+Hit 'b' to start over from the beginning
+Hit 'q' to exit
+
+*y*
+
+Word clouds created - take a look in your project folder!
+
+MENU:
+Hit 'd' for new project with default parameters
+Hit 'n' for new project with parameters specified by you
+Hit 'q' to exit
+
+*q*
+
+Goodbye!
+
+```
+
+### Features
+
+class Project(*first_year=2010, last_year=this_year, chart="radio-songs", num_songs=3*)
+| Parameters    |                                           |
+|---------------|-------------------------------------------|
+|first_year: int|The year you wish to start getting billbord charts for|
+|last_year: int |The last year of your time period. Defaults to current year|
+|chart: str     |Example "radio-hits", "hot-100", see [billboard.com](http://www.billboard.com/charts) for more
+examples|
+|num_songs: int  |Number of songs you wish to get from each year|
+
+| Methods       |                                           |
+|---------------|-------------------------------------------|
+|get_clouds(cloud_type=...)   |Creates word clouds and save each one as png-file|
+|...cloud_type="song"|Creates one word cloud for each song|
+|...cloud_type="year"|Creates one word cloud for each year during time span, combining all song lyrics for the year.|
 
 ## Authors
 
@@ -84,4 +110,4 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 ## Acknowledgments
 
 * [README inspiration](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2#file-readme-template-md) from [PurpleBooth](https://github.com/PurpleBooth)
-* IT support from [Shortlisted](https://github.com/shortlisted)
+* Special thanks to [Shortlisted](https://github.com/shortlisted)
