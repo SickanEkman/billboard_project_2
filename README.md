@@ -1,7 +1,7 @@
 # TAL - Text Analysis of Lyrics
 
 TAL gets Billboard chart information and creates visual output of lyrics. The project is made as a school assignment
-for the course *Applyed programming for Linguists* at *Stockholm University*.
+for the course *Applied programming for Linguists* at *Stockholm University*.
 
 ## Getting Started
 
@@ -42,19 +42,19 @@ TAL will ask for all input it needs to run. Just follow the instructions!
 ### Example
 
 ```
-*python3 main.py*
+> python3 main.py
 
 MENU:
 Hit 'd' for new project with default parameters
 Hit 'n' for new project with parameters specified by you
 Hit 'q' to exit
 
-*n*
+> n
 
-First year: *1990*
-Last year: *2017*
-Chart name: *hot-100*
-Number of songs for each year: *10*
+First year: > 1990
+Last year: > 2017
+Chart name: > hot-100
+Number of songs for each year: > 10
 
 ```
 (Above selection might take a couple of minutes)
@@ -67,7 +67,7 @@ Hit 'y' to create a word cloud for each YEAR
 Hit 'b' to start over from the beginning
 Hit 'q' to exit
 
-*y*
+> y
 
 Word clouds created - take a look in your project folder!
 
@@ -76,15 +76,18 @@ Hit 'd' for new project with default parameters
 Hit 'n' for new project with parameters specified by you
 Hit 'q' to exit
 
-*q*
+> q
 
 Goodbye!
 
 ```
 
+![Word cloud example - 15 songs from 1970](example.png)
+
 ### Features
 
 class Project(*first_year=2010, last_year=this_year, chart="radio-songs", num_songs=3*)
+
 | Parameters    |                                           |
 |---------------|-------------------------------------------|
 |first_year: int|The year you wish to start getting billbord charts for|
