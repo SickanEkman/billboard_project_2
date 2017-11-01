@@ -11,7 +11,7 @@ from wordcloud import WordCloud
 this_year = datetime.date.today().year
 
 class Project(object):
-    def __init__(self, first_year=2017, last_year=this_year, chart="radio-songs", num_songs=5):
+    def __init__(self, first_year=1992, last_year=1993, chart="hard-rock-albums", num_songs=3):
         """Gets Billboard chart info and instantiates a song object for each hit."""
         self.first_year = first_year
         self.last_year = last_year
@@ -80,12 +80,16 @@ class Project(object):
         if cloud_type == "song":
             for k, v in self.dict_with_song_objs.items():
                 text = v.lyrics.replace("\n", " ")
-                cloud = WordCloud(collocations=False).generate(text)
-                plt.imshow(cloud, interpolation="bilinear")
-                plt.axis("off")
-                # plt.show()
-                filename = str(k) + ".png"
-                cloud.to_file(filename)
+                try:
+                    cloud = WordCloud(collocations=False).generate(text)
+                    plt.imshow(cloud, interpolation="bilinear")
+                    plt.axis("off")
+                    # plt.show()
+                    filename = str(k) + ".png"
+                    cloud.to_file(filename)
+                except:
+                    print("passing")
+                    break
         elif cloud_type == "year":
             counter = 1
             while counter <= len(self.year_dict):
@@ -94,13 +98,17 @@ class Project(object):
                     if self.year_dict[str(counter)] in k:
                         text = text + "\n" + v.lyrics
                 text = text.replace("\n", " ")
-                cloud = WordCloud(collocations=False).generate(text)
-                plt.imshow(cloud, interpolation="bilinear")
-                plt.axis("off")
-                # plt.show()
-                filename = self.year_dict[str(counter)] + ".png"
-                cloud.to_file(filename)
-                counter += 1
+                try:
+                    cloud = WordCloud(collocations=False).generate(text)
+                    plt.imshow(cloud, interpolation="bilinear")
+                    plt.axis("off")
+                    # plt.show()
+                    filename = self.year_dict[str(counter)] + ".png"
+                    cloud.to_file(filename)
+                    counter += 1
+                except:
+                    print("passing")
+                    break
         print("\nWord clouds created - take a look in your project folder!")
 
 
