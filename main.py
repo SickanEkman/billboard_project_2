@@ -11,8 +11,8 @@ from wordcloud import WordCloud
 this_year = datetime.date.today().year
 
 class Project(object):
-    def __init__(self, first_year=1992, last_year=2005, chart="radio-songs", num_songs=1):
-        """Gets Billboard chart info and instantiates a song object for each hit."""
+    def __init__(self, first_year=2015, last_year=this_year, chart="radio-songs", num_songs=5):
+        """Gets Billboard chart info and creates a song object for each hit."""
         self.first_year = first_year
         self.last_year = last_year
         self.chart_name = chart
@@ -62,7 +62,7 @@ class Project(object):
         fout.close()
 
     def create_song_objects(self):
-        """For each song in the json-file a song object is instantiated. Returns a dictionary with all song objects.
+        """For each song in the json-file a song object is created. Returns a dictionary with all song objects.
         Example: {"song_2000_0": <__main__.Song_obj...>, "song_2000_1": <__main__.Song_obj...>}"""
         song_obj_dict = {}
         with open("chart_songs.json", "r") as fin:
@@ -77,6 +77,7 @@ class Project(object):
         return song_obj_dict
 
     def get_clouds(self, cloud_type="year"):
+        """Creates word clouds for either every song, or for each year"""
         x = 0
         if cloud_type == "song":
             if len(self.dict_with_song_objs) < 1:
@@ -191,6 +192,7 @@ class SongObj(object):
         lyrics = "\n".join(lyrics_as_list)
         return lyrics
 
+
 def validate_chart_name(name="radio-songs", action="validate"):
     regex_all_charts = r"chart-row__chart-link\" href=\"/.*\">"
     regex_remove_beginning = r"^.*\shref=\"/charts/"
@@ -213,6 +215,7 @@ def validate_chart_name(name="radio-songs", action="validate"):
         for title in set_possible_charts:
             print(title)
         print("\n")
+
 
 def run_program():
     while True:
