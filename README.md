@@ -51,6 +51,11 @@ Hit 'q' to exit
 
 > n
 
+Hit 'l' for list of possible chart names
+Hit Enter key to skip this step
+
+> (Enter)
+
 First year: > 1990
 Last year: > 2017
 Chart name: > hot-100

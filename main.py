@@ -11,7 +11,7 @@ from wordcloud import WordCloud
 this_year = datetime.date.today().year
 
 class Project(object):
-    def __init__(self, first_year=1992, last_year=1993, chart="hard-rock-albums", num_songs=3):
+    def __init__(self, first_year=1992, last_year=2005, chart="radio-songs", num_songs=1):
         """Gets Billboard chart info and instantiates a song object for each hit."""
         self.first_year = first_year
         self.last_year = last_year
@@ -77,7 +77,10 @@ class Project(object):
         return song_obj_dict
 
     def get_clouds(self, cloud_type="year"):
+        x = 0
         if cloud_type == "song":
+            if len(self.dict_with_song_objs) < 1:
+                print("Couldn't find lyrics for any of the songs. Start over!")
             for k, v in self.dict_with_song_objs.items():
                 text = v.lyrics.replace("\n", " ")
                 try:
@@ -87,9 +90,10 @@ class Project(object):
                     # plt.show()
                     filename = str(k) + ".png"
                     cloud.to_file(filename)
+                    x = 1
                 except:
-                    print("passing")
-                    break
+                    print("couldn't create cloud for song", v.title)
+                    pass
         elif cloud_type == "year":
             counter = 1
             while counter <= len(self.year_dict):
@@ -105,11 +109,13 @@ class Project(object):
                     # plt.show()
                     filename = self.year_dict[str(counter)] + ".png"
                     cloud.to_file(filename)
-                    counter += 1
+                    x = 1
                 except:
-                    print("passing")
-                    break
-        print("\nWord clouds created - take a look in your project folder!")
+                    print("couldn't create cloud for year", self.year_dict[str(counter)])
+                    pass
+                counter += 1
+        if x == 1:
+            print("\nWord clouds created - take a look in your project folder!")
 
 
 class SongObj(object):
@@ -185,6 +191,28 @@ class SongObj(object):
         lyrics = "\n".join(lyrics_as_list)
         return lyrics
 
+def validate_chart_name(name="radio-songs", action="validate"):
+    regex_all_charts = r"chart-row__chart-link\" href=\"/.*\">"
+    regex_remove_beginning = r"^.*\shref=\"/charts/"
+    regex_remove_ending = r"\">"
+    set_possible_charts = set()
+    r = requests.get("http://www.billboard.com/charts")
+    data = r.text
+    text = re.findall(regex_all_charts, data)
+    for bracket in text:
+        bracket = re.sub(regex_remove_beginning, "", bracket)
+        bracket = re.sub(regex_remove_ending, "", bracket)
+        set_possible_charts.add(bracket)
+    if action == "validate":
+        if name in set_possible_charts:
+            return 1
+        else:
+            print("That's not a valid chart name, try again!")
+            return 0
+    elif action == "display":
+        for title in set_possible_charts:
+            print(title)
+        print("\n")
 
 def run_program():
     while True:
@@ -196,6 +224,12 @@ def run_program():
             if choice == "d":
                 new_project = Project()
             elif choice == "n":
+                choice_display_charts = input("\nHit 'l' for list of possible chart names\n"
+                                              "Hit Enter key to skip this step\n")
+                if choice_display_charts == "l":
+                    validate_chart_name(action="display")
+                else:
+                    pass
                 a = int(input("First year: "))
                 b = int(input("Last year: "))
                 if a > b:
@@ -207,6 +241,10 @@ def run_program():
                     a = int(input("First year: "))
                     b = int(input("Last year: "))
                 c = input("Chart name: ")
+                if validate_chart_name(name=c, action="validate") == 1:
+                    pass
+                else:
+                    c = input("Chart name: ")
                 d = int(input("Number of songs for each year: "))
                 new_project = Project(first_year=a, last_year=b, chart=c, num_songs=d)
             print("\nTake a look at the json-file created in the project folder. Happy with the song selection?")
