@@ -60,7 +60,7 @@ Number of songs for each year: > 10
 (Above selection might take a couple of minutes)
 ```
 
-Take a look at the json-file created in the project folder. Happy with the song selection?
+Take a look at the json-file created in your project folder. Happy with the song selection?
 MENU:
 Hit 's' to create a word cloud for each SONG
 Hit 'y' to create a word cloud for each YEAR
@@ -82,7 +82,9 @@ Goodbye!
 
 ```
 
-![Word cloud example - 15 songs from 1970](example.png)
+Example of Word cloud displaying 15 songs from "hot-100" chart from 1970:
+
+![1970](example.png)
 
 ### Features
 
@@ -92,15 +94,14 @@ class Project(*first_year=2010, last_year=this_year, chart="radio-songs", num_so
 |---------------|-------------------------------------------|
 |first_year: int|The year you wish to start getting billbord charts for|
 |last_year: int |The last year of your time period. Defaults to current year|
-|chart: str     |Example "radio-hits", "hot-100", see [billboard.com](http://www.billboard.com/charts) for more
-examples|
+|chart: str     |E.g. "radio-hits", "hot-100", see [billboard.com](http://www.billboard.com/charts) for more examples  |
 |num_songs: int  |Number of songs you wish to get from each year|
 
 | Methods       |                                           |
 |---------------|-------------------------------------------|
 |get_clouds(cloud_type=...)   |Creates word clouds and save each one as png-file|
 |...cloud_type="song"|Creates one word cloud for each song|
-|...cloud_type="year"|Creates one word cloud for each year during time span, combining all song lyrics for the year.|
+|...cloud_type="year"|Creates one word cloud for each year during time span, combining all song lyrics for the year |
 
 ## Authors
 
