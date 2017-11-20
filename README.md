@@ -1,7 +1,6 @@
 # TAL - Text Analysis of Lyrics
 
-TAL gets Billboard chart information and creates visual output of lyrics. The project is made as a school assignment
-for the course *Applied programming for Linguists* at *Stockholm University*.
+TAL gets Billboard chart information and creates visual output of lyrics. The project is made as a school assignment at *Stockholm University*.
 
 ## Getting Started
 
